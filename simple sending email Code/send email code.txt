@@ -1,0 +1,74 @@
+utils.py
+from django.core.mail import send_mail
+from django.conf import settings
+
+def send_email_to_client():
+    subject = "Send this Email Using Django"
+    message = "Hello its my First email using python and django"
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = ["shaikhsufi8691@gmail.com"]
+
+    try:
+        send_mail(subject, message, from_email, recipient_list)
+        print("Email sent successfully")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+urls.py
+from django.urls import path
+from . import views
+urlpatterns=[
+    path("",views.email,name="send_email")
+]
+
+views.py
+from django.shortcuts import render,redirect
+
+# Create your views here.
+from .utils import send_email_to_client
+def send_email(request):
+    send_email_to_client()
+    return redirect('/')
+def email(request):
+    return render(request,"home.html")
+
+html file
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Send Emaill</h1>
+<a href="{% url 'send_email' %}" class="btn btn-success">Send </a>
+
+</body>
+</html>
+
+setting.py
+# send email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'shaikhlaptop8691@gmail.com'
+EMAIL_HOST_PASSWORD = 'ymoi zqhf hlio juix'  #ye password google mail se generate karwana padega
+
+how to check email send or not
+python manage.py shell
+from email1.utils import *
+send_email_to_client()
+exit()
+
+
+send email with attechment
+from email1.views import *
+>>> send_email()
+Email sent successfully
+<HttpResponseRedirect status_code=302, "text/html; charset=utf-8", url="/">
+>>> exit()
+
+
+
+
